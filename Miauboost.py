@@ -57,6 +57,12 @@ def error_analysis(y_test, y_pred):
     #ax[1].set_xlim((y_pred.min()-10), (y_pred.max()+10))
     #ax[1].set_ylim((residuals.min()-10), (residuals.max()+10));
 
+def evaluate_rmse(y_true, y_pred, ndigits=3):
+    """ Prints the RMSE (root mean squared error) of y_pred in relation to y_true"""
+    rmse = mean_squared_error(y_true, y_pred, squared=False )
+    print("Number of predictions: ", len(y_pred))
+    print("RMSE: ", round(rmse, ndigits))
+    return rmse
 
 X_test = pd.read_csv("data/X_test.csv")
 y_test = pd.read_csv("data/y_test.csv")
@@ -68,14 +74,6 @@ print("X_train:", X_train.shape)
 print("y_train:", y_train.shape)  
 print("X_test:", X_test.shape) 
 print("y_test:", y_test.shape)  
-
-def evaluate_rmse(y_true, y_pred, ndigits=3):
-    """ Prints the RMSE (root mean squared error) of y_pred in relation to y_true"""
-    rmse = mean_squared_error(y_true, y_pred, squared=False )
-    print("Number of predictions: ", len(y_pred))
-    print("RMSE: ", round(rmse, ndigits))
-    return rmse
-
 
 # Initialize the CatBoostRegressor
 catboost_model = CatBoostRegressor(iterations=10000,  # Number of boosting iterations
@@ -101,6 +99,7 @@ error_analysis(y_test, y_pred)
 # saving the model 
 filename = 'models/cat_boost_model.sav'
 pickle.dump(catboost_model, open(filename, 'wb'))
+
 
 
 # Since
