@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ```
 
 Data: 
-Please download the .csv files containing the data as provided by Zindi and put them into the subfolder data/ 
+Please download the .csv files containing the data as provided by Zindi, unzip them and put them into the subfolder data/ 
 
 
 ## Usage
