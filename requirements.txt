@@ -9,5 +9,6 @@ jupyterlab-dash==0.1.0a3
 scikit-learn==1.2.2
 statsmodels==0.13.5
 pytest==7.3.1
-catboost==1.2.1
 graphviz==0.20.1
+xgboost==1.7.6
+catboost==1.2.1
