@@ -78,7 +78,7 @@ error = evaluate_rmse(y_test, y_pred)
 #r2_score(y_test, y_pred) 
 
 
-# Catboost looks pretty good, hyperparamter-optimization with randomizedsearchCV:
+# Catboost looks pretty good, hyperparameter-optimization with randomizedsearchCV:
 
 param_grid = {
     'iterations': [100, 500, 1000, 10000],    # Number of boosting iterations

@@ -15,4 +15,4 @@ python3 src/data_wrangling.py
 python3 src/models_baseline.py
 
 # best model for our case
-python3 src/Miauboost.py
+python3 src/miauboost.py
