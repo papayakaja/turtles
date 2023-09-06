@@ -49,10 +49,24 @@ run
 source final_script.sh
 ```
 
-In order to test prediction on a test set you created run:
+As the training of the CatBoost model includes a grid search for hyperparameter optimization, this will take a little while (expect 15-20 mins).
+
+
+
+In order to perform prediction on a test set you created (consisting of csv files for X_test and y_test), run from a shell:
+
+```bash
+python3 src/predict.py models/linear_regression_model.sav data/X_test.csv data/y_test.csv
+``` 
+for the linear baseline model, or
 
 ```bash
 python3 src/predict.py models/cat_boost_model.sav data/X_test.csv data/y_test.csv
 ```
+for the catboost model. You may replace ```data/X_test.csv data/y_test.csv``` with the paths to your own test data sets.
+
+Cheers from Team Turtle!
+
+![](https://vignette.wikia.nocookie.net/great-characters/images/b/bb/TMNT.jpeg/revision/latest?cb=20200716144943)
 
 
