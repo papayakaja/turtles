@@ -21,92 +21,6 @@ from sklearn.preprocessing import StandardScaler
 
 from sklearn.metrics import mean_squared_error, make_scorer, r2_score
 
-X_test = pd.read_csv("data/X_test.csv")
-y_test = pd.read_csv("data/y_test.csv")
-X_train = pd.read_csv("data/X_train.csv")
-y_train = pd.read_csv("data/y_train.csv")
-
-# Check the shape of the data sets
-print("X_train:", X_train.shape)  
-print("y_train:", y_train.shape)  
-print("X_test:", X_test.shape) 
-print("y_test:", y_test.shape)  
-
-def evaluate_rmse(y_true, y_pred, ndigits=3):
-    """ Prints the RMSE (root mean squared error) of y_pred in relation to y_true"""
-    rmse = mean_squared_error(y_true, y_pred, squared=False )
-    print("Number of predictions: ", len(y_pred))
-    print("RMSE: ", round(rmse, ndigits))
-    return rmse
-
-# Instantiate model
-model = CatBoostRegressor(n_estimators=20000,
-                            random_state = 42,
-                            objective='RMSE',
-                            #task_type = 'GPU',
-                            #bagging_temperature=0.1,
-                            l2_leaf_reg=5,
-                            depth=5)
-
-# Initialize the CatBoostRegressor
-catboost_model = CatBoostRegressor(iterations=10000,  # Number of boosting iterations
-                                   depth=6,          # Depth of the trees
-                                   learning_rate=0.1,  # Learning rate
-                                   loss_function='RMSE',  # Loss function for regression
-                                   verbose=100)     # Print progress every 100 iterations
-
-
-model.fit(X_train, y_train)
-
-# Make predictions on the test data
-y_pred2 = model.predict(X_test) 
-
-# evaluate
-error = evaluate_rmse(y_test, y_pred2)
-
-r2_score(y_test, y_pred2)
-
-# Fit the model to the training data
-catboost_model.fit(X_train, y_train)
-
-# Make predictions on the test data
-y_pred = catboost_model.predict(X_test)  
-
-# evaluate
-error = evaluate_rmse(y_test, y_pred)
-
-#r2_score(y_test, y_pred) 
-
-
-# Catboost looks pretty good, hyperparameter-optimization with randomizedsearchCV:
-
-param_grid = {
-    'iterations': [100, 500, 1000, 10000],    # Number of boosting iterations
-    'learning_rate': [0.01, 0.1, 0.2],  # Learning rate
-    'depth': [6, 8, 10],               # Depth of the trees
-    'l2_leaf_reg': [1, 3, 5],          # L2 regularization term
-    'border_count': [32, 64, 128],     # Number of splits for numerical features
-    'loss_function': ['RMSE'],   # Loss function for regression
-    'verbose': [100],                  # Print progress every 100 iterations
-}
-
-from sklearn.model_selection import RandomizedSearchCV
-
-catboost_model = CatBoostRegressor()
-
-random_search = RandomizedSearchCV(estimator=catboost_model, param_distributions=param_grid, cv=5, n_jobs=-1)
-random_search.fit(X_train, y_train)
-
-# Get the best parameters and estimator
-best_params = random_search.best_params_
-best_estimator = random_search.best_estimator_
-#best_params
-
-y_pred = best_estimator.predict(X_test) 
-
-# evaluate
-error = evaluate_rmse(y_test, y_pred) 
-
 # ## Error analysis:
 def error_analysis(y_test, y_pred):
     """Generated true vs. predicted values and residual scatter plot for models
@@ -143,11 +57,50 @@ def error_analysis(y_test, y_pred):
     #ax[1].set_xlim((y_pred.min()-10), (y_pred.max()+10))
     #ax[1].set_ylim((residuals.min()-10), (residuals.max()+10));
 
+def evaluate_rmse(y_true, y_pred, ndigits=3):
+    """ Prints the RMSE (root mean squared error) of y_pred in relation to y_true"""
+    rmse = mean_squared_error(y_true, y_pred, squared=False )
+    print("Number of predictions: ", len(y_pred))
+    print("RMSE: ", round(rmse, ndigits))
+    return rmse
+
+X_test = pd.read_csv("data/X_test.csv")
+y_test = pd.read_csv("data/y_test.csv")
+X_train = pd.read_csv("data/X_train.csv")
+y_train = pd.read_csv("data/y_train.csv")
+
+# Check the shape of the data sets
+print("X_train:", X_train.shape)  
+print("y_train:", y_train.shape)  
+print("X_test:", X_test.shape) 
+print("y_test:", y_test.shape)  
+
+# Initialize the CatBoostRegressor
+catboost_model = CatBoostRegressor(iterations=10000,  # Number of boosting iterations
+                                   depth=6,          # Depth of the trees
+                                   learning_rate=0.1,  # Learning rate
+                                   loss_function='RMSE',  # Loss function for regression
+                                   verbose=100)     # Print progress every 100 iterations
+
+
+# Fit the model to the training data
+catboost_model.fit(X_train, y_train)
+
+# Make predictions on the test data
+y_pred = catboost_model.predict(X_test)  
+
+# evaluate
+error = evaluate_rmse(y_test, y_pred)
+
+#r2_score(y_test, y_pred) 
+
 error_analysis(y_test, y_pred)
 
 # saving the model 
 filename = 'models/cat_boost_model.sav'
 pickle.dump(catboost_model, open(filename, 'wb'))
+
+
 
 # Since
 # 
