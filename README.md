@@ -2,6 +2,16 @@
 
 This repository contains our work on the ML project done during Spiced Academy's data science course.
 
+The project has been done by:
+
+[DonShenal](https://github.com/Donshenal)
+
+[larixlarix](https://github.com/larixlarix)
+
+[RiptideDS](https://github.com/RiptideDS)
+
+and myself [papayakaja](https://github.com/papayakaja)
+
 The data used for this is: [turtle rescue forecast](https://zindi.africa/competitions/turtle-rescue-forecast-challenge) from Zindi.
 
 The deliverables are:
